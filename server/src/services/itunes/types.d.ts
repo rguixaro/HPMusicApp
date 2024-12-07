@@ -20,4 +20,5 @@ export type AppleMusicAPIAlbumItem = {
 	artworkUrl100: string;
 	trackCount: number;
 	releaseDate: string;
+	collectionExplicitness: 'explicit' | 'cleaned' | 'notExplicit';
 };
