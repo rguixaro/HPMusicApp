@@ -60,6 +60,12 @@ export class AlbumModel {
 	}): AppleMusicAPIAlbumItem[] {
 		if (!albums?.length) return [];
 		return albums.filter((album, index, self) => {
+			if (
+				album.collectionName.includes(' - Single') ||
+				album.collectionName.includes(' - EP')
+			)
+				return false;
+
 			const firstIndex = self.findIndex(
 				(item) => item[field] === album[field]
 			);
