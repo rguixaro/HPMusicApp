@@ -1,2 +1,3 @@
-# AppleMusicApp
+# HPMusicApp
+
 HP Technical Challenge
