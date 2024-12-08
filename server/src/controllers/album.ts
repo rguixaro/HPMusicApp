@@ -20,6 +20,7 @@ export class AlbumController {
 				.json({ success: false, message: 'Artist is required' });
 		let albums = await this.albumModel.searchBy({ artist });
 		albums = this.albumModel.filterAlbumsBy({ albums, field: 'collectionName' });
-		return response.json({ success: true, albums });
+		const resources = this.albumModel.classifyAlbums({ resources: albums });
+		return response.json({ success: true, resources });
 	};
 }

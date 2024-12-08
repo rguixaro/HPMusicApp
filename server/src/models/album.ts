@@ -60,16 +60,31 @@ export class AlbumModel {
 	}): AppleMusicAPIAlbumItem[] {
 		if (!albums?.length) return [];
 		return albums.filter((album, index, self) => {
-			if (
-				album.collectionName.includes(' - Single') ||
-				album.collectionName.includes(' - EP')
-			)
-				return false;
-
 			const firstIndex = self.findIndex(
 				(item) => item[field] === album[field]
 			);
 			return firstIndex === index;
 		});
+	}
+
+	/**
+	 * Classify albums based on the collectionType property
+	 * @param param0: {resources: AppleMusicAPIAlbumItem[];}
+	 * @returns {albums: AppleMusicAPIAlbumItem[]; singles: AppleMusicAPIAlbumItem[]; eps: AppleMusicAPIAlbumItem[];}
+	 */
+	static classifyAlbums({ resources }: { resources: AppleMusicAPIAlbumItem[] }): {
+		albums: AppleMusicAPIAlbumItem[];
+		singles: AppleMusicAPIAlbumItem[];
+		eps: AppleMusicAPIAlbumItem[];
+	} {
+		let albums = [];
+		let singles = [];
+		let eps = [];
+		for (const album of resources) {
+			if (album.collectionName.includes(' - Single')) singles.push(album);
+			else if (album.collectionName.includes(' - EP')) eps.push(album);
+			else albums.push(album);
+		}
+		return { albums, singles, eps };
 	}
 }
