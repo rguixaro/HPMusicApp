@@ -1,19 +1,8 @@
 <script setup lang="ts">
 import type { Resource } from '@/stores/resources'
+import { trimTrackName } from '@/utils/helpers'
 
 const props = defineProps<{ item: Resource }>()
-
-/**
- * Trim the track name
- * @param name
- * @returns {string}
- */
-function trimTrackName(name: string): string {
-  return name
-    .replace(/[^()]*\]/, '')
-    .replace(' - Single', '')
-    .replace(' - EP', '')
-}
 </script>
 
 <template>
