@@ -1,23 +1,19 @@
-import type { Resource } from '@/stores/resources'
-
+import type { Resource } from '../../stores/resources'
 import API from './client'
 
 /**
  * Apple Music API Response type definition
  */
 export interface QueryResourcesResponse {
-  albums: Resource[]
-  singles: Resource[]
-  eps: Resource[]
+  resources?: { albums: Resource[]; singles: Resource[]; eps: Resource[] }
+  error?: boolean
 }
 
 /**
  * Empty response for when no resources are found
  */
 const EmptyQueryResourcesResponse: QueryResourcesResponse = {
-  albums: [],
-  singles: [],
-  eps: [],
+  resources: { albums: [], singles: [], eps: [] },
 }
 
 /**
@@ -28,10 +24,9 @@ const EmptyQueryResourcesResponse: QueryResourcesResponse = {
 export async function queryResources(query: string): Promise<QueryResourcesResponse> {
   try {
     const response = await API.get('albums', { params: { artist: query } })
-    if (response.data.success) return response.data.resources
+    if (response.data.success) return { resources: response.data.resources }
     return EmptyQueryResourcesResponse
   } catch (error) {
-    console.error(error)
-    return EmptyQueryResourcesResponse
+    return { error: true }
   }
 }

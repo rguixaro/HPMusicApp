@@ -2,6 +2,7 @@
 import { reactive, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import debounce from 'lodash.debounce'
+import { toast } from 'vue-sonner'
 
 import { queryResources } from '@/services/api/resources'
 import { useResourcesStore } from '@/stores/resources'
@@ -17,9 +18,15 @@ const form = reactive({ query: '' })
  * Search for resources
  */
 async function search() {
-  const resources = await queryResources(form.query)
-  set(resources)
-  if (route.path !== '/') router.push('/')
+  const { resources, error } = await queryResources(form.query)
+  if (error || !resources)
+    toast.error('Something went wrong.', {
+      class: 'bg-[#3a3a3b] rounded-lg px-5 w-auto border-accent border-2 text-white font-bold',
+    })
+  else {
+    set(resources)
+    if (route.path !== '/') router.push('/')
+  }
 }
 
 /**
