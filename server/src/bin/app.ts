@@ -13,9 +13,10 @@ export const createApp = ({ albumModel }: { albumModel: AlbumInstance }) => {
 	app.use(corsMiddleware());
 	app.disable('x-powered-by');
 
-	app.use('/albums', createAlbumRouter({ albumModel }));
+	const APIv1 = express();
+	APIv1.use('/albums', createAlbumRouter({ albumModel }));
 
-	app.listen(PORT, () => {
-		console.log(`server listening on port http://localhost:${PORT}`);
-	});
+	app.use('/api/v1', APIv1);
+	app.listen(PORT);
+	return app;
 };
