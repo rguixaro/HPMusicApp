@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref, reactive, watch } from 'vue'
 
 import { useResourcesStore, type Resource } from '@/stores/resources'
 import AlbumItem from '@/components/core/AlbumItem.vue'
@@ -8,13 +8,11 @@ import SearchInput from '@/components/core/SearchInput.vue'
 import { cn } from '@/utils/cn'
 
 const store = useResourcesStore()
-store.$subscribe((state) => {
-  /* @ts-ignore */
-  albums.list = state.events.target?.albums
-  /* @ts-ignore */
-  singles.list = state.events.target?.singles
-  /* @ts-ignore */
-  eps.list = state.events.target?.eps
+
+watch(store, () => {
+  albums.list = store.albums
+  singles.list = store.singles
+  eps.list = store.eps
 })
 
 const albums = reactive({ list: store.albums })
@@ -56,7 +54,7 @@ function update({ type, query }: { type: 'album' | 'single' | 'ep'; query: strin
   }
 }
 </script>
-<!--  -->
+
 <template>
   <main class="relative pt-16 h-screen w-[calc(100vw-14rem)] overflow-y-auto">
     <div
